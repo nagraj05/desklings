@@ -6,5 +6,4 @@ out
 *.log*
 .claude
 .vscode
-/build
 CLAUDE.md
