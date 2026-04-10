@@ -14,7 +14,7 @@ export class ReminderScheduler {
       () => {
         if (!overlayWin.isDestroyed()) {
           overlayWin.webContents.send('overlay:fire-water-reminder', {
-            characterId: config.characterId,
+            buddyId: config.buddyId,
           })
         }
       },
@@ -48,7 +48,7 @@ export class ReminderScheduler {
             this.notifiedTaskIds.add(task.id)
             overlayWin.webContents.send('overlay:fire-task-reminder', {
               task,
-              characterId: reminderConfig.characterId,
+              buddyId: reminderConfig.buddyId,
             })
           }
         }

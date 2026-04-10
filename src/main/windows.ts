@@ -5,10 +5,12 @@ import { is } from '@electron-toolkit/utils'
 export function createSettingsWindow(): BrowserWindow {
   const win = new BrowserWindow({
     width: 900,
-    height: 670,
+    height: 640,
     show: false,
+    frame: false,
     autoHideMenuBar: true,
     title: 'Desklings',
+    titleBarStyle: 'hidden',
     webPreferences: {
       preload: join(__dirname, '../preload/index.js'),
       sandbox: false,
@@ -35,7 +37,7 @@ export function createSettingsWindow(): BrowserWindow {
 
 export function createOverlayWindow(): BrowserWindow {
   const { workArea, workAreaSize } = screen.getPrimaryDisplay()
-  const height = 120
+  const height = 140
 
   const win = new BrowserWindow({
     width: workAreaSize.width,

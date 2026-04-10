@@ -1,5 +1,5 @@
 import type {
-  CharacterConfig,
+  BuddyConfig,
   WaterReminderConfig,
   TaskReminderConfig,
   Task,
@@ -9,13 +9,14 @@ import type {
 
 interface SettingsApi {
   getStore: () => Promise<AppStore>
-  setCharacters: (chars: CharacterConfig[]) => Promise<void>
+  setBuddies: (buddies: BuddyConfig[]) => Promise<void>
   setWaterReminder: (config: WaterReminderConfig) => Promise<void>
   setTaskReminder: (config: TaskReminderConfig) => Promise<void>
   setTasks: (tasks: Task[]) => Promise<void>
   detectApps: () => Promise<DetectedApp[]>
   browseApp: () => Promise<string | null>
-  onCharactersUpdated: (cb: (chars: CharacterConfig[]) => void) => void
+  minimize: () => void
+  closeWindow: () => void
 }
 
 declare global {

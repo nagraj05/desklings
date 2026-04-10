@@ -1,14 +1,15 @@
-export type CharacterId = 'ninja' | 'samurai' | 'robot' | 'android' | 'hero' | 'astronaut'
-
-export interface CharacterConfig {
-  id: CharacterId
-  name: string
-  assignedAppPath: string | null
+// A "buddy" is a character instance the user has configured.
+// Multiple buddies can share the same characterKey (visual template) but differ in name/app.
+export interface BuddyConfig {
+  id: string          // UUID — stable identity
+  name: string        // user-facing label e.g. "My Robot"
+  characterKey: string // key into CHARACTER_DEFS e.g. "iron-man"
+  exePath: string | null
   active: boolean
 }
 
 export interface WaterReminderConfig {
-  characterId: CharacterId
+  buddyId: string | null  // which buddy speaks the reminder
   intervalMinutes: number
   active: boolean
   alwaysVisible: boolean
@@ -22,13 +23,13 @@ export interface Task {
 }
 
 export interface TaskReminderConfig {
-  characterId: CharacterId
+  buddyId: string | null
   active: boolean
   alwaysVisible: boolean
 }
 
 export interface AppStore {
-  characters: CharacterConfig[]
+  buddies: BuddyConfig[]
   waterReminder: WaterReminderConfig
   taskReminder: TaskReminderConfig
   tasks: Task[]

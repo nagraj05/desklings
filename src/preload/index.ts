@@ -1,9 +1,9 @@
 import { contextBridge, ipcRenderer } from 'electron'
-import type { CharacterConfig, WaterReminderConfig, TaskReminderConfig, Task } from '../shared/ipc-types'
+import type { BuddyConfig, WaterReminderConfig, TaskReminderConfig, Task } from '../shared/ipc-types'
 
 const api = {
   getStore: () => ipcRenderer.invoke('store:get'),
-  setCharacters: (chars: CharacterConfig[]) => ipcRenderer.invoke('store:set-characters', chars),
+  setBuddies: (buddies: BuddyConfig[]) => ipcRenderer.invoke('store:set-buddies', buddies),
   setWaterReminder: (config: WaterReminderConfig) =>
     ipcRenderer.invoke('store:set-water-reminder', config),
   setTaskReminder: (config: TaskReminderConfig) =>
@@ -14,9 +14,8 @@ const api = {
     ipcRenderer.invoke('app:detect-installed'),
   browseApp: (): Promise<string | null> => ipcRenderer.invoke('app:browse-exe'),
 
-  onCharactersUpdated: (cb: (chars: CharacterConfig[]) => void) => {
-    ipcRenderer.on('settings:characters-updated', (_, chars) => cb(chars))
-  },
+  minimize: () => ipcRenderer.send('window:minimize'),
+  closeWindow: () => ipcRenderer.send('window:close'),
 }
 
 if (process.contextIsolated) {
