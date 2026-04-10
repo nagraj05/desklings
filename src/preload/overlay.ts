@@ -1,33 +1,30 @@
 import { contextBridge, ipcRenderer } from 'electron'
-import type { CharacterId, Task } from '../shared/ipc-types'
+import type { BuddyConfig, WaterReminderConfig, TaskReminderConfig, Task } from '../shared/ipc-types'
 
 interface ConfigUpdatePayload {
-  characters: import('../shared/ipc-types').CharacterConfig[]
-  waterReminder: import('../shared/ipc-types').WaterReminderConfig
-  taskReminder: import('../shared/ipc-types').TaskReminderConfig
+  buddies: BuddyConfig[]
+  waterReminder: WaterReminderConfig
+  taskReminder: TaskReminderConfig
 }
 
 const overlayApi = {
   setIgnoreMouseEvents: (ignore: boolean) =>
     ipcRenderer.invoke('overlay:set-ignore-mouse', { ignore }),
 
-  characterClicked: (payload: { characterId: CharacterId; role: 'general' | 'water' | 'task' }) =>
+  characterClicked: (payload: { buddyId: string; role: 'general' | 'water' | 'task' }) =>
     ipcRenderer.send('overlay:character-clicked', payload),
 
   sendReady: () => ipcRenderer.send('overlay:ready'),
-
-  getResourcePath: (characterId: CharacterId): Promise<string> =>
-    ipcRenderer.invoke('overlay:get-resource-path', characterId),
 
   onConfigUpdate: (cb: (config: ConfigUpdatePayload) => void) => {
     ipcRenderer.on('overlay:config-update', (_, config) => cb(config))
   },
 
-  onFireWaterReminder: (cb: (payload: { characterId: CharacterId }) => void) => {
+  onFireWaterReminder: (cb: (payload: { buddyId: string }) => void) => {
     ipcRenderer.on('overlay:fire-water-reminder', (_, payload) => cb(payload))
   },
 
-  onFireTaskReminder: (cb: (payload: { task: Task; characterId: CharacterId }) => void) => {
+  onFireTaskReminder: (cb: (payload: { task: Task; buddyId: string }) => void) => {
     ipcRenderer.on('overlay:fire-task-reminder', (_, payload) => cb(payload))
   },
 }
