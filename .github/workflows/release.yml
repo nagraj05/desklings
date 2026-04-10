@@ -41,9 +41,14 @@ jobs:
 
       - name: Build
         run: npm run ${{ matrix.build_cmd }}
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: List dist output
+        run: ls dist/
+        shell: bash
 
       - name: Upload to GitHub Release
         uses: softprops/action-gh-release@v2
         with:
-          generate_release_notes: true
           files: ${{ matrix.artifact_glob }}
